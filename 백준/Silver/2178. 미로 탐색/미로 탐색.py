@@ -7,7 +7,7 @@ for i in range(N):
     miro[i]=tmp
 dx=[0,0,1,-1]
 dy=[1,-1,0,0]
-def DFS(miro):
+def BFS(miro):
     count=0
     dequee = deque()
     dequee.append([0, 0])
@@ -28,5 +28,5 @@ def DFS(miro):
                     if(targetX==N-1 and targetY==M-1):
                         return count
 
-answer=DFS(miro)
+answer=BFS(miro)
 print(answer+1)
