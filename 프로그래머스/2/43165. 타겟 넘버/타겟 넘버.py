@@ -1,15 +1,24 @@
 def solution(numbers, target):
-    answer = 0
-    array=[[] for i in range(len(numbers))]
-    for i in range(len(numbers)):
-        temp=numbers[i]
-        if(i==0):
-            array[i].append(temp)
-            array[i].append(-temp)
+    answer=0
+    
+    def dfs(number_count, sum_value):
+        nonlocal answer
+        if(number_count==len(numbers)):
+            if(sum_value==target):
+                answer+=1
+                return
         else:
-            for j in range(len(array[i-1])):
-                array[i].append(array[i-1][j]+temp)
-                array[i].append(array[i-1][j]-temp)
-            
-    answer=array[len(numbers)-1].count(target)
+            minus_sum_value=sum_value+(-1)*numbers[number_count]
+            minus_count=number_count+1
+            dfs(minus_count,minus_sum_value)
+        
+            plus_sum_value=sum_value+numbers[number_count]
+            plus_count=number_count+1
+            dfs(plus_count,plus_sum_value)
+        
+    dfs(0,0)
+    
     return answer
+        
+            
+                
