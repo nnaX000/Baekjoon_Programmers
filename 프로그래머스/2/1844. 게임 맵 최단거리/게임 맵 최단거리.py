@@ -1,27 +1,36 @@
 from collections import deque
 def solution(maps):
-    answer = 1
-    dequee=deque()
-    dx=[0,0,1,-1]
-    dy=[1,-1,0,0]
-    m=len(maps)
-    n=len(maps[0])
-    dequee.append((0,0))
+    
+    visited=[[False for i in range(len(maps[0]))] for j in range(len(maps))]
+    visited[0][0]=True
+    min_value=[float('inf')]
+    x_num=len(maps)-1
+    y_num=len(maps[0])-1
+    dequee=deque([[0,0,1]])
+    
+    dx=[-1,1,0,0]
+    dy=[0,0,-1,1]
+    
     while(dequee):
-        answer+=1
-        size=len(dequee)
-        for i in range(size):
-            tmp=dequee.popleft()
-            for j in range(len(dy)):
-                targetX=tmp[0]+dx[j]
-                targetY=tmp[1]+dy[j]
-                if(targetX<0 or targetY<0 or targetX>=m or targetY>=n):
-                    continue
-                if(maps[targetX][targetY]==0):
-                    continue
-                if(maps[targetX][targetY]==1):
-                    if(targetX==m-1 and targetY==n-1):
-                        return answer
-                    maps[targetX][targetY]=0
-                    dequee.append((targetX,targetY))
-    return -1
+        x,y,score=dequee.popleft()
+        
+        if(x==x_num and y==y_num):
+            min_value[0]=score
+            break
+            
+        for i in range(4):
+            new_x=x+dx[i]
+            new_y=y+dy[i]
+            
+            if(0<=new_x<=x_num and 0<=new_y<=y_num and maps[new_x][new_y]==1 and not visited[new_x][new_y]):
+                score+=1
+                visited[new_x][new_y]=True
+                dequee.append([new_x,new_y,score])
+                score-=1
+                
+    
+    if(min_value[0]==float('inf')):
+        min_value[0]=-1
+    
+    return min_value[0]
+    
