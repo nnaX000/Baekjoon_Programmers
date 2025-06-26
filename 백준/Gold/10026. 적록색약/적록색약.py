@@ -21,7 +21,7 @@ yak_visited=[[False for i in range(N)] for j in range(N)]
 
 def dfs(x,y,color) :
 
-    visited[x][y]=True
+    #visited[x][y]=True
     
     for i in range(4):
         new_x=x+dx[i]
@@ -35,7 +35,7 @@ def dfs(x,y,color) :
 
 def yak_dfs(x,y,color) :
 
-    yak_visited[x][y]=True
+    #yak_visited[x][y]=True
     
     for i in range(4):
         new_x=x+dx[i]
