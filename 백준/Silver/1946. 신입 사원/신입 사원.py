@@ -1,4 +1,6 @@
-T=int(input())
+import sys
+
+T=int(sys.stdin.readline().strip())
 answer=[]
 
 for i in range(T):
@@ -6,10 +8,10 @@ for i in range(T):
     accept=[]
     array=[]
 
-    N=int(input())
+    N=int(sys.stdin.readline().strip())
 
     for j in range(N):
-        array.append(list(map(int,input().split(' '))))
+        array.append(list(map(int,sys.stdin.readline().strip().split(' '))))
 
     array.sort(key=lambda x:x[0])
     accept.append(array[0])
