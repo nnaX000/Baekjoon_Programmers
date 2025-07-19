@@ -2,26 +2,31 @@ import sys
 
 X=int(sys.stdin.readline().rstrip())
 
-ax=0
-ay=0
-tmp=-1
+stand=2
+sum_value=1
+row=0
 
-if(X==1):
-    ax=0
-    ay=0
-else:   
-    for i in range(X-1):
-        if(ax+tmp<0 or ay-tmp<0):
-            if(tmp==-1):
-                tmp=1
-                ay+=1
-            else:
-                tmp=-1
-                ax+=1
-        else:
-            ax+=tmp
-            ay-=tmp
+while(True):
+    if(sum_value>=X):
+        stand-=1
+        break
+    sum_value+=(stand)
+    stand+=1
+    row+=1
 
+ram=X-(sum_value-stand)
 
-print(str(ax+1)+"/"+str(ay+1))
-    
+if(row%2==0):
+    x=row
+    y=0
+    for i in range(ram-1):
+        x-=1
+        y+=1
+else:
+    x=0
+    y=row
+    for i in range(ram-1):
+        x+=1
+        y-=1
+
+print(str(x+1)+"/"+str(y+1))
