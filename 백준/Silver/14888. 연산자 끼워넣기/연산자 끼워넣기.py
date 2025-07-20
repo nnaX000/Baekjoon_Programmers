@@ -27,7 +27,7 @@ for idx,i in enumerate(operator):
     for j in range(i):
         operators.append(tmp)
 
-visited=[False for i in range(N-1)]
+visited=[False for i in range(len(operators))]
 path=[]
 answer=[]
 
