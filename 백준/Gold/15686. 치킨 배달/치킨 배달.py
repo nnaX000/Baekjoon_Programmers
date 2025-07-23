@@ -1,31 +1,61 @@
+# 0 빈칸 / 1 집 / 2 치킨칩
+# NxN
+# M은 고를 수 있는 치킨집 수
+
 import sys
-from itertools import combinations
+import itertools
 
-input = sys.stdin.readline
+N,M=map(int,sys.stdin.readline().rstrip().split(' '))
 
-N, M = map(int, input().split())
-village = [list(map(int, input().split())) for _ in range(N)]
+village=[]
+result=[]
+chicken=[]
+path=[]
+home=[]
+answer=[float('inf')]
 
-chicken = []
-home = []
+for i in range(N):
+    village.append(list(map(int,sys.stdin.readline().rstrip().split(' '))))
 
 for i in range(N):
     for j in range(N):
-        if village[i][j] == 2:
-            chicken.append((i, j))
-        elif village[i][j] == 1:
-            home.append((i, j))
+        if(village[i][j]==2):
+            chicken.append([i,j])
+        if(village[i][j]==1):
+            home.append([i,j])
 
-answer = float('inf')
+visited=[False for i in range(len(chicken))]
 
-for comb in combinations(chicken, M):
-    sum_value = 0
-    for hx, hy in home:
-        min_dist = float('inf')
-        for cx, cy in comb:
-            dist = abs(hx - cx) + abs(hy - cy)
-            min_dist = min(min_dist, dist)
-        sum_value += min_dist
-    answer = min(answer, sum_value)
+# def dfs(chicken,visited,path,start):
+#     if(len(path)==M):
+#         result.append(path[:])
+#         return
+    
+#     for i in range(start,len(chicken)):
+#         if(visited[i]):
+#             continue
 
-print(answer)
+#         path.append(chicken[i])
+#         visited[i]=True
+#         dfs(chicken,visited,path,start+1)
+#         visited[i]=False
+#         path.pop()
+
+# dfs(chicken,visited,path,0)
+
+result=itertools.combinations(chicken, M)
+
+for i in result:
+    sum_value=0
+    for j in home:
+        min_value=[float('inf')]
+        for k in i:
+            tmp=abs((k[0]+1)-(j[0]+1))+abs((k[1]+1)-(j[1]+1))
+            if(tmp<min_value[0]):
+                min_value[0]=tmp
+        sum_value+=min_value[0]
+    
+    if(sum_value<answer[0]):
+        answer[0]=sum_value
+
+print(answer[0])
