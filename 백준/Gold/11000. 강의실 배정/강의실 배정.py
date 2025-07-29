@@ -1,21 +1,32 @@
 import sys
 import heapq
+from collections import deque
 
-N=int(sys.stdin.readline().strip())
+N=int(sys.stdin.readline().rstrip())
 
-q=[]
-room=[]
+classes=[]
 
 for i in range(N):
-    start,end=map(int,sys.stdin.readline().strip().split(' '))
-    heapq.heappush(q,[start,end])
+    classes.append(list(map(int,sys.stdin.readline().rstrip().split(' '))))
 
-while(q):
-    occupy=False
-    tmp=heapq.heappop(q)
-    if(room and room[0]<=tmp[0]): # 힙은 제일 작은 것부터 반환하므로 제일 빠른 종료시간보다 시작시간이 빠르면 더이상 볼 것도 없음
-        heapq.heappop(room)
+classes.sort(key=lambda x:x[0])
+classes=deque(classes)
 
-    heapq.heappush(room, tmp[1])
+heap=[]
+tmp=classes.popleft()
+heapq.heappush(heap,tmp[1])
 
-print(len(room))
+while(classes):
+    tmp=classes.popleft()
+    start=tmp[0]
+    end=tmp[1]
+
+    tmp=heapq.heappop(heap)
+
+    if(tmp>start):
+        heapq.heappush(heap,tmp)
+        heapq.heappush(heap,end)
+    else:
+        heapq.heappush(heap,end)
+
+print(len(heap))
