@@ -4,12 +4,12 @@ N,M=map(int,sys.stdin.readline().rstrip().split(' '))
 array=list(map(int,sys.stdin.readline().rstrip().split(' ')))
 array.sort()
 
-answer=set()
+answer=[]
 
 def dfs(array,tmp):
     global answer
     if(len(tmp)==M):
-        answer.add(tuple(tmp[:]))
+        answer.append(tmp[:])
         return
     for i in range(len(array)):
         tmp.append(array[i])
@@ -19,7 +19,6 @@ def dfs(array,tmp):
 tmp=[]
 dfs(array,tmp)
 
-answer=list(answer)
 answer.sort()
 
 for i in answer:
