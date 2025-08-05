@@ -9,7 +9,7 @@ answer=[]
 def dfs(array,tmp):
     global answer
     if(len(tmp)==M):
-        answer.append(tmp[:])
+        print(*tmp)
         return
     for i in range(len(array)):
         tmp.append(array[i])
@@ -18,8 +18,3 @@ def dfs(array,tmp):
 
 tmp=[]
 dfs(array,tmp)
-
-answer.sort()
-
-for i in answer:
-    print(*i)
