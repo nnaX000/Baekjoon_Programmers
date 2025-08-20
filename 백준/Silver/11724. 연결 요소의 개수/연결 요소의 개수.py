@@ -12,7 +12,6 @@ for i in range(M):
     graph[b].append(a)
 
 def dfs(start):
-
     for i in range(len(graph[start])):
         if(not visited[graph[start][i]]):
             visited[graph[start][i]]=True
@@ -22,7 +21,6 @@ visited=[False for i in range(N+1)]
 
 for i in range(1,N+1):
     if(not visited[i]):
-        check=True
         dfs(i)
         answer+=1
 
