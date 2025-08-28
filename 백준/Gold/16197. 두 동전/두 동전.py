@@ -84,12 +84,12 @@ while(dequee):
         if((nx_1,ny_1,nx_2,ny_2)==(x_1,y_1,x_2,y_2)):
             continue
 
-        if((nx_1,ny_1,nx_2,ny_2) not in visited and cost<10):
+        if((nx_1,ny_1,nx_2,ny_2) not in visited and cost+1<10):
             visited.add((nx_1,ny_1,nx_2,ny_2))
             visited.add((nx_2,ny_2,nx_1,ny_1))
             dequee.append([nx_1,ny_1,nx_2,ny_2,cost+1])
 
-if(min_value==10000000 or min_value>10):
+if(min_value==10000000):
     print(-1)
 else:
     print(min_value)
