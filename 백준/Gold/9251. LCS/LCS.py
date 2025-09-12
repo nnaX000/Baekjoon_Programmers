@@ -1,14 +1,23 @@
-string_1=input()
-string_2=input()
+import sys
 
-table=[[0 for i in range(len(string_1)+1)] for j in range(len(string_2)+1)]
+A=list(sys.stdin.readline().rstrip())
+B=list(sys.stdin.readline().rstrip())
 
+dp=[0 for i in range(len(A)+1)]
+dp_1=[0 for i in range(len(A)+1)] # 건드리는 배열 기준
 
-for i in range(len(string_2)):
-    for j in range(len(string_1)):
-        if(string_2[i]==string_1[j]):
-            table[i+1][j+1]=table[i][j]+1
+max_value=float('-inf')
+
+for i in range(1,len(B)+1):
+    for j in range(1,len(A)+1):
+        if (B[i-1]==A[j-1]):
+            dp_1[j]=dp[j-1]+1
         else:
-            table[i+1][j+1]=max(table[i+1][j],table[i][j+1])
+            dp_1[j]=max(dp[j],dp_1[j-1])
 
-print(table[len(string_2)][len(string_1)])
+    max_value=max(dp_1)
+
+    dp=dp_1[:]
+    dp_1=[0 for i in range(len(A)+1)]
+
+print(max_value)
