@@ -1,0 +1,4 @@
+-- 코드를 입력하세요
+SELECT COUNT(*) AS USERS
+FROM USER_INFO AS ui
+WHERE ui.JOINED LIKE "2021%" and ui.AGE>=20 and ui.AGE<=29
