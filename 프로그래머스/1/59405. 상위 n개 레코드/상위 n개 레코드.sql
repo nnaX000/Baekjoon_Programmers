@@ -1,0 +1,5 @@
+-- 코드를 입력하세요
+SELECT ai.NAME
+FROM ANIMAL_INS AS ai
+ORDER BY ai.DATETIME
+LIMIT 1;
