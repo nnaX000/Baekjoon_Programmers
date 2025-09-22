@@ -26,25 +26,7 @@ for k in candi_dict :
         tmp=0
 
         for j in range(3):
-            tmp+=len(candi_dict[array[j]])
-
-            if(j==0):
-                if(array[1] in candi_dict[array[j]]):
-                    tmp-=1
-                if(array[2] in candi_dict[array[j]]):
-                    tmp-=1
-
-            if(j==1):
-                if(array[0] in candi_dict[array[j]]):
-                    tmp-=1
-                if(array[2] in candi_dict[array[j]]):
-                    tmp-=1
-
-            if(j==2):
-                if(array[0] in candi_dict[array[j]]):
-                    tmp-=1
-                if(array[1] in candi_dict[array[j]]):
-                    tmp-=1
+            tmp+=len(candi_dict[array[j]])-2
 
         min_value = min(min_value,tmp)
 
