@@ -1,0 +1,6 @@
+-- 코드를 작성해주세요
+SELECT fi.ID , fi.LENGTH
+FROM FISH_INFO AS fi
+ORDER BY fi.LENGTH DESC , fi.ID
+LIMIT 10;
+
