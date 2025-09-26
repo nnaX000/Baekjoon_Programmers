@@ -1,0 +1,6 @@
+-- 코드를 입력하세요
+SELECT ai.ANIMAL_TYPE,
+       COUNT(*) AS count
+FROM ANIMAL_INS AS ai
+GROUP BY ai.ANIMAL_TYPE	
+ORDER BY ai.ANIMAL_TYPE	
