@@ -1,0 +1,24 @@
+SELECT
+    CASE
+        WHEN d.SKILL_CODE & python.CODE > 0 AND d.SKILL_CODE & fe.CODE > 0 THEN 'A'
+        WHEN d.SKILL_CODE & csharp.CODE > 0 THEN 'B'
+        WHEN d.SKILL_CODE & fe.CODE > 0 THEN 'C'
+    END AS GRADE,
+    d.ID,
+    d.EMAIL
+FROM DEVELOPERS d
+JOIN (
+    SELECT SUM(CODE) AS CODE FROM SKILLCODES WHERE CATEGORY = 'Front End'
+) fe
+JOIN (
+    SELECT CODE FROM SKILLCODES WHERE NAME = 'Python'
+) python
+JOIN (
+    SELECT CODE FROM SKILLCODES WHERE NAME = 'C#'
+) csharp
+WHERE
+    (d.SKILL_CODE & python.CODE > 0 AND d.SKILL_CODE & fe.CODE > 0)
+    OR d.SKILL_CODE & csharp.CODE > 0
+    OR (d.SKILL_CODE & fe.CODE > 0)
+ORDER BY GRADE, d.ID;
+        
