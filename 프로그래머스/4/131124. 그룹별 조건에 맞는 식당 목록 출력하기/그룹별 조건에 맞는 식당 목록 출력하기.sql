@@ -1,0 +1,19 @@
+SELECT mp.MEMBER_NAME,
+       rr.REVIEW_TEXT,
+       DATE_FORMAT(rr.REVIEW_DATE, "%Y-%m-%d") AS REVIEW_DATE
+FROM REST_REVIEW rr
+JOIN MEMBER_PROFILE mp ON rr.MEMBER_ID = mp.MEMBER_ID
+WHERE rr.MEMBER_ID IN (
+    SELECT MEMBER_ID
+    FROM REST_REVIEW
+    GROUP BY MEMBER_ID
+    HAVING COUNT(*) = (
+        SELECT MAX(review_count)
+        FROM (
+            SELECT COUNT(*) AS review_count
+            FROM REST_REVIEW
+            GROUP BY MEMBER_ID
+        ) t
+    )
+)
+ORDER BY REVIEW_DATE, rr.REVIEW_TEXT;
