@@ -27,7 +27,7 @@ def dfs(x,y,limit):
             visited[n_x][n_y]=True
             dfs(n_x,n_y,limit)
 
-for i in range(0,101):
+for i in range(0,max_value+1):
     visited=[[False for k in range(N)]for j in range(N)]
     result=0
     for j in range(N):
