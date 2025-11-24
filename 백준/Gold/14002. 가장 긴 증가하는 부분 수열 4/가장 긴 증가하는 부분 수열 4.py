@@ -3,23 +3,25 @@ import sys
 N=int(sys.stdin.readline().rstrip())
 A=list(map(int,sys.stdin.readline().rstrip().split(' ')))
 
-dp=[1 for i in range(N)]
-dp_num=[]
+dp_num=[1 for i in range(N)]
+dp=[]
 
-max_idx=0
+for i in A:
+    dp.append([i])
 
-for i in range(N):
-    dp_num.append([A[i]])
+for i in range(1,len(A)):
+    for j in range(i):
+        if(A[j]<A[i]):
+            if(dp_num[i]<dp_num[j]+1):
+                dp_num[i]=dp_num[j]+1
+                tmp=dp[j][:]
+                tmp.append(A[i])
+                dp[i]=tmp
 
-for i in range(N):
-    for j in range(i,-1,-1):
-        if(A[i]>A[j]):
-            if(dp[i]<dp[j]+1):
-                dp[i]=dp[j]+1
-                dp_num[i]=dp_num[j]+[A[i]]
+max_value=max(dp_num)
 
-    if(dp[i]>dp[max_idx]):
-        max_idx=i
-
-print(dp[max_idx])
-print(*dp_num[max_idx])
+for i in range(len(dp)):
+    if(len(dp[i])==max_value):
+        print(max_value)
+        print(*dp[i])
+        break
