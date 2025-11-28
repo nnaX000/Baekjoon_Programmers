@@ -16,10 +16,10 @@ visited[f_1]=0
 
 heap=[]
 heapq.heapify(heap)
-heapq.heappush(heap,(f_1,float('-inf')))
+heapq.heappush(heap,(float('-inf'),f_1))
 
 while(heap):
-    current, cost = heapq.heappop(heap)
+    cost, current = heapq.heappop(heap)
     cost = -cost
 
     if(visited[current]>cost):
@@ -33,4 +33,4 @@ while(heap):
         c,d=path[current][i][0],path[current][i][1]
         if(visited[d]<min(c,cost)):
             visited[d]=min(c,cost)
-            heapq.heappush(heap,(d,-visited[d]))
+            heapq.heappush(heap,(-visited[d],d))
