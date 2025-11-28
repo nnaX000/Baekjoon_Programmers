@@ -10,7 +10,7 @@ for i in range(N):
     costs.append(int(sys.stdin.readline().rstrip()))
 
 start=1
-end=100000000000000
+end=sum(costs)
 wallet=0
 answer=float('inf')
 
