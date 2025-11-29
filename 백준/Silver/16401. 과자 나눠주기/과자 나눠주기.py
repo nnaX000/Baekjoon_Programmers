@@ -3,8 +3,8 @@ import sys
 M,N=map(int,sys.stdin.readline().rstrip().split(' '))
 L=list(map(int,sys.stdin.readline().rstrip().split(' ')))
 
-start=0
-end=max(L)+1
+start=1
+end=max(L)
 answer=0
 
 while(start<=end):
