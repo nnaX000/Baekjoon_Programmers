@@ -17,6 +17,8 @@ for i in range(97,123):
 
 for idx,i in enumerate(L):
     num=alpha[i]
-    answer+=((num)*(31**idx))%1234567891
+    answer+=((num)*(31**idx))
+
+answer%=1234567891
 
 print(answer)
