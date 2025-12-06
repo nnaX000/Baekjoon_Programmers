@@ -22,7 +22,7 @@ for idx,i in enumerate(isbm):
 for i in range(0,10):
     sum_value+=(star*i)
 
-    if(((10-(sum_value%10))%10)==check):
+    if(((10-sum_value)%10)==check):
         print(i)
         sys.exit(0)
 
