@@ -33,7 +33,6 @@ for i in range(T):
         for k in range(w):
             if(j==0 or j==h-1 or k==0 or k==w-1):
                 if(maps[j][k]!="*"):
-                    visited[j][k]=True
                     dequee.append((j,k))
 
     while(dequee):
