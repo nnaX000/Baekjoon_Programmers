@@ -34,6 +34,18 @@ for i in range(M):
 for key,value in trees.items():
     value.sort()
 
+surround=defaultdict(list)
+
+for i in range(N):
+    for j in range(N):
+        for k in range(8):
+            n_x=i+dx[k]
+            n_y=j+dy[k]
+
+            if(0<=n_x<N and 0<=n_y<N):
+                surround[(i,j)].append((n_x,n_y))
+
+
 for i in range(K):
     #tmp=defaultdict(list)
 
@@ -64,18 +76,11 @@ for i in range(K):
     for key,value in trees.items():
         x,y=key[0],key[1]
 
-        for k in range(8):
-            n_x=x+dx[k]
-            n_y=y+dy[k]
-
-            if(0<=n_x<N and 0<=n_y<N):
-                tmp[key].append((n_x,n_y))
-
         for j in value:
             if(j%5==0):
                 num[key]+=1
 
-    for key,value in tmp.items():
+    for key,value in surround.items():
         for j in value:
             for k in range(num[key]):
                 trees[j].append(1)
