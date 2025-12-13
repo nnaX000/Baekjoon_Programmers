@@ -1,12 +1,14 @@
-num,weight=map(int,input().split(' '))
-array=[]
-for i in range(num):
-    tmp=list(map(int,input().split(' ')))
-    array.append(tmp)
-array=sorted(array,key=lambda x:x[0])
+import sys
 
-dp=[0]*(weight+1)
-for n,v in array:
-     for i in range(weight,n-1,-1):
-        dp[i]=max(dp[i],dp[i-n]+v)
-print(max(dp))
+N,K=map(int,sys.stdin.readline().rstrip().split(' '))
+
+bags=[]
+weight=[0 for i in range(K+1)]
+max_value=float('-inf')
+
+for i in range(N):
+    w,v = map(int,sys.stdin.readline().rstrip().split(' ')) #무게, 가치
+    for j in range(K,w-1,-1):
+        weight[j]=max(weight[j],weight[j-w]+v)
+
+print(max(weight))
