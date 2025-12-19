@@ -1,13 +1,19 @@
-notHear,notSee=map(int,input().split(' '))
-notHearPerson=set()
-notSeePerson=set()
-for i in range(notHear):
-    tmp=input()
-    notHearPerson.add(tmp)
-for i in range(notSee):
-    tmp=input()
-    notSeePerson.add(tmp)
-result=sorted(notHearPerson&notSeePerson)
+import sys
+
+N,M=map(int,sys.stdin.readline().rstrip().split(' '))
+
+hear_x=set()
+look_x=set()
+
+for i in range(N):
+    hear_x.add(sys.stdin.readline().rstrip())
+
+for i in range(M):
+    look_x.add(sys.stdin.readline().rstrip())
+
+result=sorted(list(hear_x & look_x))
+
 print(len(result))
+
 for i in result:
     print(i)
