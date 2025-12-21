@@ -1,18 +1,27 @@
 import sys
-from collections import deque
-dequee=deque()
-computerNum=int(sys.stdin.readline())
-caseNum=int(sys.stdin.readline())
-array=[[] for i in range(computerNum+1)]
-dequee.append(1)
+
+N=int(sys.stdin.readline().rstrip())
+relation_N=int(sys.stdin.readline().rstrip())
+
+relation=[[] for i in range(N+1)]
+answer=0
+
+for i in range(relation_N):
+    a,b=map(int,sys.stdin.readline().rstrip().split(' '))
+    relation[a].append(b)
+    relation[b].append(a)
+
 visited=set()
-for i in range(caseNum):
-    tmp=list(map(int,sys.stdin.readline().split(' ')))
-    array[tmp[0]].append(tmp[1])
-    array[tmp[1]].append(tmp[0])
-while(dequee):
-    target=dequee.pop()
-    if (target not in visited):
-        visited.add(target)
-        dequee.extend(array[target])
+
+def dfs(virus):
+    global answer
+
+    for i in range(len(relation[virus])):
+        if(relation[virus][i] not in visited):
+            visited.add(relation[virus][i])
+            dfs(relation[virus][i])
+
+visited.add(1)
+dfs(1)
+
 print(len(visited)-1)
