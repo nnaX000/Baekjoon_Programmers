@@ -1,27 +1,26 @@
 import sys
 
 T=int(sys.stdin.readline().rstrip())
-count=0
-
-def dfs(n):
-    global count
-
-    if(n==0):
-        count+=1
-
-    if(n-1>=0):
-        dfs(n-1)
-    
-    if(n-2>=0):
-        dfs(n-2)
-
-    if(n-3>=0):
-        dfs(n-3)
 
 for i in range(T):
-    tmp=int(sys.stdin.readline().rstrip())
-    count=0
+    n=int(sys.stdin.readline().rstrip())
+    dp=[0 for j in range(n+1)]
 
-    dfs(tmp)
+    if(n>=1):
+        dp[1]=1
 
-    print(count)
+    if(n>=2):
+        dp[2]=1
+
+    if(n>=3):
+        dp[3]=1
+        
+    for j in range(2,n+1):
+        if(j-3>=1):
+            dp[j]+=dp[j-3]
+        if(j-2>=1):
+            dp[j]+=dp[j-2]
+        if(j-1>=1):
+            dp[j]+=dp[j-1]
+
+    print(dp[-1])
