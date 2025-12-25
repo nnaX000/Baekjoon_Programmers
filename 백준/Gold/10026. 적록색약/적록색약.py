@@ -1,63 +1,67 @@
 import sys
+
 sys.setrecursionlimit(10**6)
 
-N=int(input())
-picture=[]
-for i in range(N):
-    row=input()
-    temp=[]
-    for j in row:
-        temp.append(j)
-    picture.append(temp)
+N=int(sys.stdin.readline().rstrip())
+
+#빨강, 초록, 파랑
+#적록색약은 근데 빨간색하고 초록색 차이를 거의 못 느낌
 
 dx=[-1,1,0,0]
 dy=[0,0,-1,1]
 
-answer=0
-yak_answer=0
+def normal_dfs(x,y,color):
+    global visited
+
+    for i in range(4):
+        nx=x+dx[i]
+        ny=y+dy[i]
+
+        if(0<=nx<N and 0<=ny<N and not visited[nx][ny] and array[nx][ny]==color):
+            visited[nx][ny]=True
+            normal_dfs(nx,ny,color)
+
+def dfs(x,y,color):
+    global visited
+
+    for i in range(4):
+        nx=x+dx[i]
+        ny=y+dy[i]
+
+        if(0<=nx<N and 0<=ny<N and not visited[nx][ny]):
+            if(color=="R" or color=="G"):
+                if(array[nx][ny]=="R" or array[nx][ny]=="G"):
+                    visited[nx][ny]=True
+                    dfs(nx,ny,color)
+            else:
+                if(color==array[nx][ny]):
+                    visited[nx][ny]=True
+                    dfs(nx,ny,color)
+
+array=[]
+
+for i in range(N):
+    array.append(list(sys.stdin.readline().rstrip()))
 
 visited=[[False for i in range(N)] for j in range(N)]
-yak_visited=[[False for i in range(N)] for j in range(N)]
+normal_answer=0
 
-def dfs(x,y,color) :
+#적록색약이 아닌 사람
+for i in range(N):
+    for j in range(N):
+        if(not visited[i][j]):
+            visited[i][j]=True
+            normal_dfs(i,j,array[i][j])
+            normal_answer+=1
 
-    #visited[x][y]=True
-    
-    for i in range(4):
-        new_x=x+dx[i]
-        new_y=y+dy[i]
-
-        if(0<=new_x<N and 0<=new_y<N and not visited[new_x][new_y]):
-            if(picture[new_x][new_y]==color):
-                visited[new_x][new_y]=True
-                dfs(new_x,new_y,color)
-
-
-def yak_dfs(x,y,color) :
-
-    #yak_visited[x][y]=True
-    
-    for i in range(4):
-        new_x=x+dx[i]
-        new_y=y+dy[i]
-
-        if(0<=new_x<N and 0<=new_y<N and not yak_visited[new_x][new_y]):
-            if(picture[new_x][new_y]==color or (color == 'G' and picture[new_x][new_y]=='R') or (color == 'R' and picture[new_x][new_y]=='G')):
-                yak_visited[new_x][new_y]=True
-                yak_dfs(new_x,new_y,color)
-
+visited=[[False for i in range(N)] for j in range(N)]
+answer=0
 
 for i in range(N):
     for j in range(N):
         if(not visited[i][j]):
-            dfs(i,j,picture[i][j])
+            visited[i][j]=True
+            dfs(i,j,array[i][j])
             answer+=1
 
-for i in range(N):
-    for j in range(N):
-        if(not yak_visited[i][j]):
-            yak_dfs(i,j,picture[i][j])
-            yak_answer+=1
-
-print(answer,yak_answer)
-
+print(normal_answer,answer)
