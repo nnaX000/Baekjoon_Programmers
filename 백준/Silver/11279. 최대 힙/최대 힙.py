@@ -1,20 +1,19 @@
-import heapq
 import sys
-num=int(sys.stdin.readline())
-answer=[]
-list=[]
-length=0
-for i in range(num):
-    tmp=-int(sys.stdin.readline())
+import heapq
+
+input=sys.stdin.readline
+
+N=int(input())
+
+heap=[]
+heapq.heapify(heap)
+
+for i in range(N):
+    tmp=int(input())
     if(tmp==0):
-        if(length==0):
-            answer.append(0)
+        if(heap):
+            print(-heapq.heappop(heap))
         else:
-            a=heapq.heappop(list)
-            answer.append(-a)
-            length-=1
+            print(0)
     else:
-        heapq.heappush(list,tmp)
-        length+=1
-for i in answer:
-    print(i)
+        heapq.heappush(heap,-tmp)
