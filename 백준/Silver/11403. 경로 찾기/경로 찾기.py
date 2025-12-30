@@ -1,13 +1,16 @@
 import sys
 
-N=int(sys.stdin.readline().rstrip())
-array=[list(map(int,sys.stdin.readline().rstrip().split(' '))) for i in range(N)]
+input=sys.stdin.readline
 
-for i in range(N):
-    for j in range(N):
-        for l in range(N):
-            if(array[j][i]==1 and array[i][l]==1):
-                array[j][l]=1
+N=int(input())
 
-for i in array:
+arr=[list(map(int,input().rstrip().split())) for _ in range(N)]
+
+for k in range(N):
+    for i in range(N):
+        for j in range(N):
+            if(arr[i][k]==1 and arr[k][j]==1):
+                arr[i][j]=1
+
+for i in arr:
     print(*i)
