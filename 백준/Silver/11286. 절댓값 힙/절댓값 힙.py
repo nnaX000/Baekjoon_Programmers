@@ -1,18 +1,25 @@
-import heapq
 import sys
-num=int(sys.stdin.readline())
-array=[]
-answer=[]
-realNum=[]
-for i in range(num):
-    tmp=int(sys.stdin.readline())
-    if(tmp==0):
-        if(len(array)==0):
-            answer.append(0)
+import heapq
+
+input=sys.stdin.readline
+
+N=int(input())
+
+heap=[]
+heapq.heapify(heap)
+
+for i in range(N):
+    x=int(input())
+
+    if(x!=0):
+        if(x<0):
+            tmp=-x
         else:
-           a=heapq.heappop(array)
-           answer.append(a[1])
+            tmp=x
+
+        heapq.heappush(heap,(tmp,x))
     else:
-        heapq.heappush(array,(abs(tmp),tmp))
-for i in answer:
-    print(i)
+        if(heap):
+            print(heapq.heappop(heap)[1])
+        else:
+            print(0)
