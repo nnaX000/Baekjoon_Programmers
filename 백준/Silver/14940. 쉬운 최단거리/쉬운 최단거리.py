@@ -27,14 +27,7 @@ for i in range(n):
             target_x=i
             target_y=j
             land[i][j]=0
-
-for i in range(4):
-    nx=target_x+dx[i]
-    ny=target_y+dy[i]
-
-    if(0<=nx<n and 0<=ny<m and land[nx][ny]==-1):
-        land[nx][ny]=1
-        dequee.append((nx,ny))
+            dequee.append((i,j))
 
 while(dequee):
     x,y=dequee.popleft()
@@ -46,11 +39,6 @@ while(dequee):
         if(0<=nx<n and 0<=ny<m and land[nx][ny]==-1):
             land[nx][ny]=land[x][y]+1
             dequee.append((nx,ny))
-
-for i in range(n):
-    for j in range(m):
-        if(land[i][j]==float('inf')):
-            land[i][j]=-1
 
 for i in land:
     print(*i)
