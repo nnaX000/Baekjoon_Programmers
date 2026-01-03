@@ -5,47 +5,63 @@ input=sys.stdin.readline
 
 T=int(input())
 
-for i in range(T):
+how=["" for i in range(10000)]
+parent=[0 for i in range(10000)]
+visited=[0 for i in range(10000)]
+
+for i in range(1,T+1):
     A,B=map(int,input().split())
 
     q=deque()
 
-    q.append((A,""))
-    visited=set()
-    visited.add(A)
+    q.append((A))
+
+    if(visited[A]!=i):
+        visited[A]=i
 
     while(q):
-        x,command=q.popleft()
+        x=q.popleft()
 
         if(x==B):
-            print(command)
             break
 
-        tmp=x*2
-        if(tmp>9999):
-            tmp%=10000
+        tmp=(x*2)%10000
 
-        if(tmp not in visited):
-            q.append((tmp,command+"D"))
-            visited.add(tmp)
+        if(visited[tmp]!=i):
+            q.append(tmp)
+            how[tmp]="D"
+            parent[tmp]=x
+            visited[tmp]=i
 
-        if(x==0):
-            tmp=9999
-        else:
-            tmp=x-1
+        tmp = 9999 if x == 0 else x - 1
 
-        if(tmp not in visited):
-            q.append((tmp,command+"S"))
-            visited.add(tmp)
+        if(visited[tmp]!=i):
+            q.append(tmp)
+            how[tmp]="S"
+            parent[tmp]=x
+            visited[tmp]=i
 
         tmp = (x % 1000) * 10 + (x // 1000)
 
-        if(tmp not in visited):
-            q.append((tmp,command+"L"))
-            visited.add(tmp)
+        if(visited[tmp]!=i):
+            q.append(tmp)
+            how[tmp]="L"
+            parent[tmp]=x
+            visited[tmp]=i
 
         tmp = (x % 10) * 1000 + (x // 10)
 
-        if(tmp not in visited):
-            q.append((tmp,command+"R"))
-            visited.add(tmp)
+        if(visited[tmp]!=i):
+            q.append(tmp)
+            how[tmp]="R"
+            parent[tmp]=x
+            visited[tmp]=i
+
+    answer=[]
+    cur=B
+
+    while(cur!=A):
+        answer.append(how[cur])
+        cur=parent[cur]
+
+    print(''.join(reversed(answer)))
