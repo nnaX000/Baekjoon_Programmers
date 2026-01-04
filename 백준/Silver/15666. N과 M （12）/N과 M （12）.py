@@ -10,33 +10,21 @@ input=sys.stdin.readline
 N,M=map(int,input().split())
 N_array=list(map(int,input().split()))
 N_array.sort()
-answer=set()
 
-def dfs(array):
-    global answer
+array=[]
+
+def dfs(start):
 
     if(len(array)==M):
-        check=False
-
-        for i in range(1,M):
-            if(array[i-1]>array[i]):
-                check=True
-                break
-
-        if(not check):
-            answer.add(tuple(array[:]))
-
+        print(*array)
         return
 
-    for i in range(N):
-        array.append(N_array[i])
-        dfs(array)
-        array.pop()
+    used=set()
+    for i in range(start,N):
+        if(N_array[i] not in used):
+            array.append(N_array[i])
+            used.add(N_array[i])
+            dfs(i)
+            array.pop()
 
-dfs([])
-
-answer=list(answer)
-answer.sort()
-
-for i in answer:
-    print(*i)
+dfs(0)
