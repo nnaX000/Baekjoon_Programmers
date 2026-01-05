@@ -8,21 +8,17 @@ for i in range(T):
     n=int(input())
 
     stiker=[list((map(int,input().rstrip().split()))) for _ in range(2)]
-    n_stiker=[]
 
-    for j in range(n):
-        n_stiker.append([stiker[0][j],stiker[1][j]])
-
-    dp=[[0,0] for _ in range(n)]
-    dp[0][0]=n_stiker[0][0]
-    dp[0][1]=n_stiker[0][1]
+    dp=[[0 for i in range(n)] for _ in range(2)]
+    dp[0][0]=stiker[0][0]
+    dp[1][0]=stiker[1][0]
 
     for j in range(1,n):
         if(j==1):
-            dp[j][1]=dp[0][0]+n_stiker[j][1]
-            dp[j][0]=dp[0][1]+n_stiker[j][0]
+            dp[1][j]=dp[0][0]+stiker[1][j]
+            dp[0][j]=dp[1][0]+stiker[0][j]
         else:
-            dp[j][0]=max(dp[j-1][1]+n_stiker[j][0],max(dp[j-2])+n_stiker[j][0])
-            dp[j][1]=max(dp[j-1][0]+n_stiker[j][1],max(dp[j-2])+n_stiker[j][1])
+            dp[0][j]=max(dp[1][j-1]+stiker[0][j],max(dp[0][j-2],dp[1][j-2])+stiker[0][j])
+            dp[1][j]=max(dp[0][j-1]+stiker[1][j],max(dp[0][j-2],dp[1][j-2])+stiker[1][j])
 
     print(max(max(i) for i in dp))
