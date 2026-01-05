@@ -1,21 +1,20 @@
+import sys
+
+input=sys.stdin.readline
+
 N=int(input())
-array=[]
 
-for i in range(N):
-    array.append(list(map(int,input().split(' '))))
+house=[list(map(int,input().split())) for _ in range(N)]
 
-table=[[0 for i in range(3)] for j in range(N)]
+dp=[[0 for _ in range(3)] for i in range(N)]
 
-for i in range(3):
-    table[0][i]=array[0][i]
+dp[0][0]=house[0][0]
+dp[0][1]=house[0][1]
+dp[0][2]=house[0][2]
 
 for i in range(1,N):
-    for j in range(3):
-        if(j==0):
-            table[i][j]=min(array[i][j]+table[i-1][1],array[i][j]+table[i-1][2])
-        elif(j==1):
-            table[i][j]=min(array[i][j]+table[i-1][0],array[i][j]+table[i-1][2])
-        else:
-            table[i][j]=min(array[i][j]+table[i-1][0],array[i][j]+table[i-1][1])
+    dp[i][0]=min(dp[i-1][1],dp[i-1][2])+house[i][0]
+    dp[i][1]=min(dp[i-1][0],dp[i-1][2])+house[i][1]
+    dp[i][2]=min(dp[i-1][0],dp[i-1][1])+house[i][2]
 
-print(min(table[N-1]))
+print(min(dp[N-1]))
