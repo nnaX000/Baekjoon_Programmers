@@ -1,5 +1,7 @@
 import sys
 
-A,B,C=map(int,sys.stdin.readline().rstrip().split(' '))
+input=sys.stdin.readline
 
-print(pow(A, B, C))
+A,B,C=map(int,input().split())
+
+print(pow(A,B,C))
