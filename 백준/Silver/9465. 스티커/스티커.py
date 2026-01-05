@@ -18,7 +18,7 @@ for i in range(T):
             dp[1][j]=dp[0][0]+stiker[1][j]
             dp[0][j]=dp[1][0]+stiker[0][j]
         else:
-            dp[0][j]=max(dp[1][j-1]+stiker[0][j],max(dp[0][j-2],dp[1][j-2])+stiker[0][j])
-            dp[1][j]=max(dp[0][j-1]+stiker[1][j],max(dp[0][j-2],dp[1][j-2])+stiker[1][j])
+            dp[0][j]=max(dp[1][j-1],dp[0][j-2],dp[1][j-2])+stiker[0][j]
+            dp[1][j]=max(dp[0][j-1],dp[0][j-2],dp[1][j-2])+stiker[1][j]
 
     print(max(max(i) for i in dp))
