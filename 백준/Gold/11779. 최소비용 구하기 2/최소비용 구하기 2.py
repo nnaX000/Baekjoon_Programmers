@@ -1,39 +1,47 @@
 import sys
 import heapq
 
-n=int(sys.stdin.readline().rstrip())
-m=int(sys.stdin.readline().rstrip())
+input=sys.stdin.readline
 
+n=int(input())
+m=int(input())
+
+prev=[0 for i in range(n+1)]
+answer=[float('inf') for i in range(n+1)]
 bus=[[] for i in range(n+1)]
-
-visited=[False for i in range(n+1)]
-
-minimum_cost=[["INF",[]] for i in range(n+1)]
-
 heap=[]
+heapq.heapify(heap)
 
 for i in range(m):
-    start,end,cost=map(int,sys.stdin.readline().rstrip().split(' '))
-    bus[start].append([cost,end])
+    start,end,cost=map(int,input().split())
 
-start_city,finish_city=map(int,sys.stdin.readline().rstrip().split(' '))
+    bus[start].append([end,cost])
 
-heapq.heappush(heap,[0,start_city,[start_city]])#[최단거리, 시작버스, 경로]
+depart,des=map(int,input().split())
+heapq.heappush(heap,(0,depart))
+answer[depart]=0
 
 while(heap):
-    dis,start,path=heapq.heappop(heap)
+    cost,current=heapq.heappop(heap)
 
-    if(not visited[start]):
-        visited[start]=True
-        minimum_cost[start]=[dis,path[:]]
-        
-        for i in range(len(bus[start])):
-            if(not visited[bus[start][i][1]]):
-                new_path=path[:]
-                new_path.append(bus[start][i][1])
-                heapq.heappush(heap,[dis+bus[start][i][0],bus[start][i][1],new_path])
+    if(answer[current]<cost):
+        continue
 
-print(minimum_cost[finish_city][0])
-print(len(minimum_cost[finish_city][1]))
-for i in range(len(minimum_cost[finish_city][1])):
-    print(minimum_cost[finish_city][1][i],end=" ")
+    for i in range(len(bus[current])):
+        if(answer[bus[current][i][0]]>answer[current]+bus[current][i][1]):
+            answer[bus[current][i][0]]=answer[current]+bus[current][i][1]
+            prev[bus[current][i][0]]=current
+            heapq.heappush(heap, (answer[current]+bus[current][i][1],bus[current][i][0]))
+
+tmp=des
+route=[]
+route.append(tmp)
+while(tmp!=0):
+    route.append(prev[tmp])
+    tmp=prev[tmp]
+
+route=list(reversed(route[:len(route)-1]))
+
+print(answer[des])
+print(len(route))
+print(*route)
