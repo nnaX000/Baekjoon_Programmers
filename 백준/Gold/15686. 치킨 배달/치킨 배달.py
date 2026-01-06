@@ -1,61 +1,49 @@
-# 0 빈칸 / 1 집 / 2 치킨칩
-# NxN
-# M은 고를 수 있는 치킨집 수
-
 import sys
-import itertools
+from itertools import combinations
+from collections import defaultdict
 
-N,M=map(int,sys.stdin.readline().rstrip().split(' '))
+input=sys.stdin.readline
 
-village=[]
-result=[]
+#0빈칸
+#1집
+#2치킨집
+#최대 M개의 치킨집 고르기
+#도시의 치킨 거리=모든 집의 치킨 거리 합
+
+N,M=map(int,input().split())
+city=[list(map(int,input().split())) for _ in range(N)]
 chicken=[]
-path=[]
-home=[]
-answer=[float('inf')]
+house=[]
 
-for i in range(N):
-    village.append(list(map(int,sys.stdin.readline().rstrip().split(' '))))
+cost=defaultdict(list)
 
 for i in range(N):
     for j in range(N):
-        if(village[i][j]==2):
+        if(city[i][j]==2):
             chicken.append([i,j])
-        if(village[i][j]==1):
-            home.append([i,j])
+        elif(city[i][j]==1):
+            house.append([i,j])
 
-visited=[False for i in range(len(chicken))]
+out=len(chicken)-M
 
-# def dfs(chicken,visited,path,start):
-#     if(len(path)==M):
-#         result.append(path[:])
-#         return
-    
-#     for i in range(start,len(chicken)):
-#         if(visited[i]):
-#             continue
+for x,y in chicken:
+    for h_x,h_y in house:
+        cost[(h_x,h_y)].append(abs(h_x-x)+abs(h_y-y))
 
-#         path.append(chicken[i])
-#         visited[i]=True
-#         dfs(chicken,visited,path,start+1)
-#         visited[i]=False
-#         path.pop()
+candi=[i for i in range(len(chicken))]
+answer=float('inf')
 
-# dfs(chicken,visited,path,0)
+for i in combinations(candi,out):
+    except_c=set(i)
+    tmp=0
+    for key,value in cost.items():
+        min_value=float('inf')
+        for jdx,j in enumerate(value):
+            if(jdx not in except_c):
+                min_value=min(min_value,j)
+        
+        tmp+=min_value
 
-result=itertools.combinations(chicken, M)
+    answer=min(answer,tmp)
 
-for i in result:
-    sum_value=0
-    for j in home:
-        min_value=[float('inf')]
-        for k in i:
-            tmp=abs((k[0]+1)-(j[0]+1))+abs((k[1]+1)-(j[1]+1))
-            if(tmp<min_value[0]):
-                min_value[0]=tmp
-        sum_value+=min_value[0]
-    
-    if(sum_value<answer[0]):
-        answer[0]=sum_value
-
-print(answer[0])
+print(answer)
