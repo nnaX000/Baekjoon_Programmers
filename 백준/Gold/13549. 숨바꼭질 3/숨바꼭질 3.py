@@ -1,30 +1,30 @@
 import sys
 from collections import deque
 
-N,K=map(int,sys.stdin.readline().rstrip().split(' '))
-dist=[-1 for i in range(200000)]
-dist[N]=0
+input=sys.stdin.readline
+
+N,K=map(int,input().split())
+
 dequee=deque()
-dequee.append(N)
+dequee.append((N,0))
+
+visited=[False for _ in range(100001)]
 
 while(dequee):
-    tmp=dequee.popleft()
+    pos,count=dequee.popleft()
 
-    if(tmp==K):
-        print(dist[K])
-        break
-    
-    #2배 위치로 가기
-    if(0<=2*tmp<200000 and dist[2*tmp]==-1):
-        dist[2*tmp]=dist[tmp]
-        dequee.append(2*tmp)
+    if(pos==K):
+        print(count)
+        sys.exit(0)
 
-    #뒤로 가기
-    if(0<=tmp-1<200000 and dist[tmp-1]==-1):
-        dist[tmp-1]=dist[tmp]+1
-        dequee.append(tmp-1)
+    if(pos*2<=100000 and not visited[pos*2]):
+        visited[pos*2]=True
+        dequee.append((pos*2,count))
 
-    #앞으로 가기
-    if(0<=tmp+1<200000 and dist[tmp+1]==-1):
-        dist[tmp+1]=dist[tmp]+1
-        dequee.append(tmp+1)
+    if(pos-1>=0 and not visited[pos-1]):
+        visited[pos-1]=True
+        dequee.append((pos-1,count+1))
+
+    if(pos+1<=100000 and not visited[pos+1]):
+        visited[pos+1]=True
+        dequee.append((pos+1,count+1))
