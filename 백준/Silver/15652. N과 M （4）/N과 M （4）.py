@@ -1,33 +1,18 @@
 import sys
 
-N,M=map(int,sys.stdin.readline().rstrip().split(' '))
+input=sys.stdin.readline
 
-answer=set()
+N,M=map(int,input().split())
+array=[i for i in range(1,N+1)]
 
-def dfs(array,start,tmp):
-    global answer
-    if(len(tmp)==M):
-        answer.add(tuple(tmp[:]))
+def dfs(num,start):
+    if(len(num)==M):
+        print(*num)
         return
-
+    
     for i in range(start,len(array)):
-        tmp.append(array[i])
-        dfs(array,i,tmp)
-        tmp.pop()
+        num.append(array[i])
+        dfs(num,i)
+        num.pop()
 
-array=[i+1 for i in range(N)]
-
-array.sort()
-
-start=0
-
-tmp=[]
-
-dfs(array,start,tmp)
-
-answer=list(answer)
-
-answer.sort()
-
-for i in answer:
-    print(*i)
+dfs([],0)
