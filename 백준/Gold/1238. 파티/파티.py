@@ -1,49 +1,46 @@
 import sys
 import heapq
 
-N, M, X = map(int,sys.stdin.readline().split(' '))
+def dij():
+    global result
+    global heap
 
-max_value=0
+    while(heap):
+        cost,current=heapq.heappop(heap)
 
-road=[[] for i in range(N+1)]
+        if(result[current]<cost):
+            continue
+
+        for i in range(len(road[current])):
+            if(result[road[current][i][0]]>result[current]+road[current][i][1]):
+                result[road[current][i][0]]=result[current]+road[current][i][1]
+                heapq.heappush(heap,(result[road[current][i][0]],road[current][i][0]))
+
+input=sys.stdin.readline
+
+N,M,X=map(int,input().split()) # X가 목적지
+
+road=[[] for _ in range(N+1)]
+answer=[0 for _ in range(N+1)]
 
 for i in range(M):
-    start,end,cost=map(int,sys.stdin.readline().split(' '))
-    road[start].append([end,cost])
-
-def dig(a,b,distance):
-    q=[]
-    heapq.heappush(q,(a,b))
-
-    distance[b]=0
-
-    while(q):
-        cost, start = heapq.heappop(q)
-        visited[start]=True
-
-        for i in range(len(road[start])):
-            if(distance[road[start][i][0]]>distance[start]+road[start][i][1] and not visited[road[start][i][0]]):
-
-                distance[road[start][i][0]]=distance[start]+road[start][i][1]
-
-                heapq.heappush(q,(distance[start]+road[start][i][1], road[start][i][0]))
-
-    return distance
+    a,b,cost=map(int,input().split())
+    road[a].append([b,cost])
 
 for i in range(1,N+1):
-    summ=0
+    heap=[]
+    heapq.heapify(heap)
 
-    distance=[float('inf')]*(N+1)
-    visited=[False]*(N+1)
-    result=dig(0,i,distance)
-    summ+=result[X]
+    heapq.heappush(heap,(0,i)) #cost, 위치
+    result=[float('inf') for _ in range(N+1)]
+    result[i]=0
 
-    distance=[float('inf')]*(N+1)
-    visited=[False]*(N+1)
-    result=dig(0,X,distance)
-    summ+=result[i]
+    dij()
 
-    if(summ>max_value):
-        max_value=summ
+    if(i==X):
+        for i in range(1, N+1):
+            answer[i] += result[i]
+    else:
+        answer[i]+=result[X]
 
-print(max_value)
+print(max(answer))
