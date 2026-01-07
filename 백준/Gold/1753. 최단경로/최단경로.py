@@ -1,36 +1,37 @@
 import sys
 import heapq
 
-V,E=map(int,sys.stdin.readline().rstrip().split(' '))
+input=sys.stdin.readline
 
-K=int(sys.stdin.readline().rstrip())
+V,E=map(int,input().split())
+K=int(input())
 
-heap=[]
-
-heapq.heappush(heap,[0,K]) #[지금까지 계산한 최단거리,현재인덱스 위치]
-
-short_dis=["INF" for i in range(V+1)]
-
-graph=[[] for i in range(V+1)]
-
-visited=[False for i in range(V+1)]
+graph=[[] for _ in range(V+1)]
 
 for i in range(E):
-    start,end,weight=map(int,sys.stdin.readline().rstrip().split(' '))
-    graph[start].append([end,weight])
+    a,b,cost=map(int,input().split())
+    graph[a].append([b,cost])
+
+heap=[]
+heapq.heapify(heap)
+heapq.heappush(heap,(0,K)) #COST,K
+
+result=[float('inf') for _ in range(V+1)]
+result[K]=0
 
 while(heap):
-    tmp=heapq.heappop(heap)
-    current=tmp[1]
-    distance=tmp[0]
+    cost,current=heapq.heappop(heap)
 
-    if(not visited[current]):
-        visited[current]=True
-        short_dis[current]=str(distance)
+    if(result[current]<cost):
+        continue
 
-        for i in range(len(graph[current])):
-            if(not visited[graph[current][i][0]]):
-                heapq.heappush(heap,[distance+graph[current][i][1],graph[current][i][0]])
+    for i in range(len(graph[current])):
+        if(result[current]+graph[current][i][1]<result[graph[current][i][0]]):
+            result[graph[current][i][0]]=result[current]+graph[current][i][1]
+            heapq.heappush(heap,(result[current]+graph[current][i][1],graph[current][i][0]))
 
-for i in range(1,len(short_dis)):
-    print(short_dis[i])
+for i in range(1,V+1):
+    if(result[i]==float('inf')):
+        print("INF")
+    else:
+        print(result[i])
