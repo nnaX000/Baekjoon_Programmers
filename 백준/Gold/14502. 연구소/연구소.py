@@ -1,63 +1,60 @@
+import sys
+from itertools import combinations
 from collections import deque
-import copy
-import itertools
 
-N,M=map(int,input().split(' '))
+input=sys.stdin.readline
 
-array=[]
-zero=[]
-virus=deque()
-count=0
-one=0
-min_answer=[float('inf')]
+N,M=map(int,input().split())
+maps=[list(map(int,input().split())) for _ in range(N)]
+
+answer=float(('-inf'))
+
+vacant=[]
+virus=[]
+wall=[]
 
 dx=[-1,1,0,0]
 dy=[0,0,-1,1]
 
-def estimation(x,y):
-    count=1
-    
-    for j in range(4):
-        new_x=x+dx[j]
-        new_y=y+dy[j]
+def bfs():
+    global count
+    global dequee
+    global visited
 
-        if(0<=new_x<N and 0<=new_y<M and test[new_x][new_y]==0):
-            test[new_x][new_y]=2
-            count+=estimation(new_x,new_y)
-    
-    return count
+    while(dequee):
+        x,y=dequee.popleft()
 
-for i in range(N):
-    array.append(list(map(int,input().split(' '))))
+        for i in range(4):
+            nx=x+dx[i]
+            ny=y+dy[i]
+
+            if(0<=nx<N and 0<=ny<M and maps[nx][ny]==0 and (nx,ny) not in visited):
+                visited.add((nx,ny))
+                count+=1
+                dequee.append((nx,ny))
 
 for i in range(N):
     for j in range(M):
-        if(array[i][j]==2):
+        if(maps[i][j]==0):
+            vacant.append([i,j])
+        elif(maps[i][j]==2):
             virus.append([i,j])
-        if(array[i][j]==0):
-            zero.append([i,j])
-        if(array[i][j]==1):
-            one+=1
+        else:
+            wall.append([i,j])
 
-combinations=itertools.combinations(zero,3)
+for i in combinations(vacant,3):
+    for a,b in i:
+        maps[a][b]=1
 
-for i in combinations:
-    test = copy.deepcopy(array)
-    results=0
     count=0
+    dequee=deque(virus)
+    visited=set()
 
-    test[i[0][0]][i[0][1]]=1
-    test[i[1][0]][i[1][1]]=1
-    test[i[2][0]][i[2][1]]=1
+    bfs()
 
-    for k in virus:
-        result=estimation(k[0],k[1])
-        results+=result
+    answer=max(answer,N*M-len(virus)-len(wall)-count-3)
 
-    min_answer[0]=min(min_answer[0],results)
+    for a,b in i:
+        maps[a][b]=0
 
-print((N*M)-min_answer[0]-(one+3))
-
-
-
-
+print(answer)
