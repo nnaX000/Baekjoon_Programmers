@@ -1,45 +1,56 @@
 import sys
 import heapq
 
-N,E=map(int,sys.stdin.readline().strip().split(' '))
+#다익스트라 분해 문제
 
-edge=[[] for i in range(N+1)]
+#구해야 하는 것
+#1->V1 , 1->V2 : 1
+#V1->V2 , V1->N : V1
+#V2->N :V2
+
+input=sys.stdin.readline
+
+answer=[0,0]
+
+N,E=map(int,input().split())
+graph=[[] for _ in range(N+1)]
 
 for i in range(E):
-    start,end,cost=map(int,sys.stdin.readline().strip().split(' '))
+    a,b,c=map(int,input().split())
 
-    edge[start].append([end,cost])
-    edge[end].append([start,cost])
+    graph[a].append([b,c]) # 노드, cost
+    graph[b].append([a,c]) # 노드, cost
 
-v1,v2=map(int,sys.stdin.readline().strip().split(' '))
+V1,V2=map(int,input().split())
 
-def dig(k):
-    q=[]
-    visited=[False]*(N+1)
-    distance=[float('inf')]*(N+1)
-    visited[k]=True
-    distance[k]=0
-    heapq.heappush(q,(0,k))
+def djk(current):
+    heap=[]
+    heapq.heappush(heap,(0,current))
+    result=[float('inf') for _ in range(N+1)]
+    result[current]=0
 
-    while(q):
-        cost,start=heapq.heappop(q)
-        visited[start]=True
+    while(heap):
+        cost,now=heapq.heappop(heap)
 
-        for i in range(len(edge[start])):
-            if(distance[edge[start][i][0]]>distance[start]+edge[start][i][1] and not visited[edge[start][i][0]]):
-                distance[edge[start][i][0]]=distance[start]+edge[start][i][1]
-                heapq.heappush(q,(distance[start]+edge[start][i][1],edge[start][i][0]))
-
-    return distance
+        if(result[now]<cost):
+            continue
+        
+        for j in range(len(graph[now])):
+            if(result[graph[now][j][0]]>result[now]+graph[now][j][1]):
+                result[graph[now][j][0]]=result[now]+graph[now][j][1]
+                heapq.heappush(heap,(result[now]+graph[now][j][1],graph[now][j][0]))
 
 
-one = dig(1)
-v1_path = dig(v1)
-v2_path = dig(v2)
+    return result
 
-path1 = one[v1] + v1_path[v2] + v2_path[N]
-path2 = one[v2] + v2_path[v1] + v1_path[N]
+dv=djk(1)
+dv_1=djk(V1)
+dv_2=djk(V2)
 
-result = min(path1, path2)
+answer_1=dv[V1]+dv_1[V2]+dv_2[N]
+answer_2=dv[V2]+dv_2[V1]+dv_1[N]
 
-print(result if result < float('inf') else -1)
+if(answer_1==float('inf') or answer_2==float('inf')):
+    print(-1)
+else:
+    print(min(answer_1,answer_2))
