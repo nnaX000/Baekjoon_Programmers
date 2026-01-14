@@ -1,24 +1,44 @@
 def solution(n, w, num):
-    row = n // w
-    ram = n % w
-    boxes = [row] * w
-
-    if ram > 0:
-        if row % 2 != 0:  # ← 방향
-            for i in range(-1, -1 - ram, -1):
-                boxes[i] += 1
-        else:  # → 방향
-            for i in range(ram):
-                boxes[i] += 1
-
-    # 정확한 (row, col) 계산
-    num_idx = num - 1
-    num_row = num_idx // w
-    col_in_row = num_idx % w
-
-    if num_row % 2 == 0:
-        num_col = col_in_row  # →
-    else:
-        num_col = w - 1 - col_in_row  # ←
-
-    return boxes[num_col] - num_row
+    # n이 전체 상자 개수
+    # w가 한 층에 쌓는 상자
+    # num이 상자 번호
+    
+    boxs=[[] for _ in range(w)]
+    left=True
+    nb=1
+    stand=0
+    answer=0
+    
+    while(True):
+        if(left):
+            for i in range(w):
+                if(nb==num):
+                    stand=i
+                boxs[i].append(nb)
+                nb+=1
+                if(n+1==nb):
+                    break
+            if(n+1==nb):
+                break     
+            left=False
+        else:
+            for i in range(w-1,-1,-1):
+                if(nb==num):
+                    stand=i
+                boxs[i].append(nb)
+                nb+=1
+                if(nb==n+1):
+                    break
+            if(nb==n+1):
+                break               
+            left=True
+            
+    print(boxs)
+            
+    for i in range(len(boxs[stand])-1,-1,-1):
+        if(boxs[stand][i]==num):
+            break
+        else:
+            answer+=1   
+                   
+    return answer+1
