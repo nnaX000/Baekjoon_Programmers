@@ -33,8 +33,6 @@ def solution(n, w, num):
                 break               
             left=True
             
-    print(boxs)
-            
     for i in range(len(boxs[stand])-1,-1,-1):
         if(boxs[stand][i]==num):
             break
