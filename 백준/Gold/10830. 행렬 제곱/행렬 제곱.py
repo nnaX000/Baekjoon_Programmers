@@ -22,6 +22,8 @@ twice=calcul(A,A)
 def answer(n):
     if(n==1):
         return A
+    elif(n==2):
+        return twice
     
     if(n%2==1):
         half=answer((n-1)//2)
