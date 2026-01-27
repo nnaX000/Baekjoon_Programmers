@@ -1,13 +1,7 @@
--- 코드를 입력하세요
-SELECT 
-    pt.PT_NAME, 
-    pt.PT_NO, 
-    pt.GEND_CD, 
-    pt.AGE,
-    CASE 
-        WHEN pt.TLNO IS NULL THEN 'NONE'
-        ELSE pt.TLNO
-    END AS TLNO
-FROM PATIENT AS pt
-WHERE pt.AGE <= 12 AND pt.GEND_CD = "W"
-ORDER BY pt.AGE DESC, pt.PT_NAME
+SELECT p.PT_NAME, p.PT_NO, p.GEND_CD, p.AGE, 
+       CASE WHEN p.TLNO IS NULL THEN 'NONE'
+            ELSE p.TLNO
+       END AS TLNO
+FROM PATIENT AS p
+WHERE p.AGE <= 12 AND p.GEND_CD = 'W'
+ORDER BY p.AGE DESC, p.PT_NAME
