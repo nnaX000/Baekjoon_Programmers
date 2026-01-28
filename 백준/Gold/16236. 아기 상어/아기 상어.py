@@ -1,75 +1,73 @@
+from collections import deque
 import sys
-from collections import defaultdict,deque
-import heapq
 
-input=sys.stdin.readline
+input = sys.stdin.readline
 
-N=int(input())
-space=[list(map(int,input().split())) for _ in range(N)]
+s_x = 0
+s_y = 0
+s_size = 2  # 초기2
+time = 0
+dx = [-1, 0, 1, 0]
+dy = [0, -1, 0, 1]
+equal_size_cnt = 0
 
-time=0
+n = int(input())
+arr = [list(map(int, input().split())) for _ in range(n)]
 
-dx=[0,0,-1,1]
-dy=[1,-1,0,0]
+# 아기상어 위치 구하기
+for i in range(n):
+    for j in range(n):
+        if arr[i][j] == 9:
+            s_x = i # 시작 x
+            s_y = j # 시작 y
 
-bs_x=0
-bs_y=0
-size=2
-count=0
+#추가
+arr[s_x][s_y]=0
 
-for i in range(N):
-    for j in range(N):
-        if(space[i][j]==9):
-            bs_x=i
-            bs_y=j
-            space[i][j]=0
+# 이동하는 함수
+def bfs():
+    q = deque()
+    q.append((0, s_x, s_y))
+    visited = [[False] * n for _ in range(n)]
+    visited[s_x][s_y]=True
+    candidate = []
 
-
-def find(x,y,size):
-    global prey
-    global visited
-
-    dequee=deque()
-    dequee.append((x,y,0))
-
-    while(dequee):
-        cx,cy,cost=dequee.popleft()
-
-        if(space[cx][cy]!=0 and space[cx][cy]<size):
-            heapq.heappush(prey,(cost,cx,cy))
+    while q:  # 들어올 수 있는애 계산
+        t,x,y = q.popleft()
 
         for i in range(4):
-            nx=cx+dx[i]
-            ny=cy+dy[i]
+            nx = x + dx[i]
+            ny = y + dy[i]
+            if 0 <= nx < n and 0 <= ny < n and s_size >= arr[nx][ny] and not visited[nx][ny]:
+                # 1초에 상하좌우 한칸씩 이동
+                visited[nx][ny] = True
+                if 0 < arr[nx][ny] < s_size:
+                    candidate.append((t+1,nx,ny))
+                q.append((t+1,nx,ny))
 
-            if(0<=nx<N and 0<=ny<N and space[nx][ny]<=size and not visited[nx][ny]):
-                visited[nx][ny]=True
-                dequee.append((nx,ny,cost+1))
+    candidate.sort()
+
+    return candidate
 
 
-while(True):
-    prey=[]
-    visited=[[False for _ in range(N)] for _ in range(N)]
-    visited[bs_x][bs_y]=True
+while True:    
+    result=bfs()
 
-    heapq.heapify(prey)
-
-    find(bs_x,bs_y,size)
-
-    if(len(prey)==0):
-        print(time)
+    if(len(result)==0):
         break
     else:
-        target=heapq.heappop(prey)
+        t, x, y = result[0]
 
-        bs_x=target[1]
-        bs_y=target[2]
-        time+=target[0]
-        count+=1
+        time += t
+        s_x = x
+        s_y = y
 
-        #선택한 물고기 없애주기
-        space[bs_x][bs_y]=0
+        arr[x][y] = 0
 
-        if(count==size):
-            size+=1
-            count=0
+        equal_size_cnt += 1
+        # 상어 넓이 증가
+        if equal_size_cnt == s_size:
+            equal_size_cnt = 0
+            s_size += 1
+
+print(time)
