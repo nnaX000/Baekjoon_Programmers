@@ -3,26 +3,25 @@ from collections import deque
 
 input=sys.stdin.readline
 
-S=input().rstrip()
-explode=input().rstrip()
-
 dequee=deque()
 
-for i in S:
-    dequee.append(i)
-    if(dequee[-1]==explode[-1]):
-        tmp=""
-        length=len(dequee)
-        for j in range(min(len(explode),length)):
-            tmp+=dequee.pop()
+s=input().rstrip()
+explode=input().rstrip()
 
-        tmp=''.join(list(reversed(tmp)))
+for i in range(len(s)):
+    dequee.append(s[i])
 
-        if(tmp!=explode):
-            for j in tmp:
-                dequee.append(j)
+    if(dequee):
+        if(dequee[-1]==explode[-1]):
+            tmp=""
+            for j in range(len(explode)):
+                if(dequee):
+                    tmp+=dequee.pop()
 
-if(len(dequee)==0):
-    print("FRULA")
-else:
-    print(''.join(dequee))
+            r_tmp=''.join(reversed(tmp))
+
+            if(r_tmp!=explode):
+                for j in r_tmp:
+                    dequee.append(j)
+
+print(''.join(dequee) if len(dequee)!=0 else "FRULA")
