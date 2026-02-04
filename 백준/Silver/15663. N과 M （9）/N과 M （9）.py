@@ -3,25 +3,24 @@ import sys
 input=sys.stdin.readline
 
 N,M=map(int,input().split())
-array=list(map(int,input().split()))
-array.sort()
 
-answer=[]
+candi=list(map(int,input().split()))
+candi.sort()
 
-def dfs(visited):
-    if(len(answer)==M):
-        print(*answer)
+def dfs(arr,visited):
+    if(len(arr)==M):
+        print(*arr)
         return
     
-    used=set()
-    for i in range(N):
-        if(array[i] not in used and not visited[i]):
-            used.add(array[i])
+    visit=set()
+    for i in range(len(candi)):
+        if(candi[i] not in visit and not visited[i]):
             visited[i]=True
-            answer.append(array[i])
-            dfs(visited)
-            answer.pop()
+            arr.append(candi[i])
+            visit.add(candi[i])
+            dfs(arr,visited)
+            arr.pop()
             visited[i]=False
 
 visited=[False for _ in range(N)]
-dfs(visited)
+dfs([],visited)
