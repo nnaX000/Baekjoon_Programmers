@@ -1,30 +1,23 @@
 import sys
 
-#중복순열
-#순열->visited
-
-sys.setrecursionlimit(10**6)
-
 input=sys.stdin.readline
 
 N,M=map(int,input().split())
-N_array=list(map(int,input().split()))
-N_array.sort()
 
-array=[]
+candi=list(map(int,input().split()))
+candi.sort()
 
-def dfs(start):
-
-    if(len(array)==M):
-        print(*array)
+def dfs(start,arr):
+    if(len(arr)==M):
+        print(*arr)
         return
+    
+    visited=set()
+    for i in range(start,len(candi)):
+        if(candi[i] not in visited):
+            visited.add(candi[i])
+            arr.append(candi[i])
+            dfs(i,arr)
+            arr.pop()
 
-    used=set()
-    for i in range(start,N):
-        if(N_array[i] not in used):
-            array.append(N_array[i])
-            used.add(N_array[i])
-            dfs(i)
-            array.pop()
-
-dfs(0)
+dfs(0,[])
