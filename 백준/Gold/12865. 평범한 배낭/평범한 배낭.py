@@ -1,14 +1,16 @@
 import sys
 
-N,K=map(int,sys.stdin.readline().rstrip().split(' '))
+input=sys.stdin.readline
 
-bags=[]
-weight=[0 for i in range(K+1)]
-max_value=float('-inf')
+N,K=map(int,input().split())
+
+dp=[0 for _ in range(K+1)]
 
 for i in range(N):
-    w,v = map(int,sys.stdin.readline().rstrip().split(' ')) #무게, 가치
-    for j in range(K,w-1,-1):
-        weight[j]=max(weight[j],weight[j-w]+v)
+    W,V=map(int,input().split()) # 무게, 가치
 
-print(max(weight))
+
+    for j in range(K,W-1,-1):
+        dp[j]=max(dp[j],dp[j-W]+V)
+
+print(max(dp))
