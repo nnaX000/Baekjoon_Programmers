@@ -1,28 +1,31 @@
 import sys
-from collections import defaultdict,deque
+
+input=sys.stdin.readline
 
 sys.setrecursionlimit(10**6)
 
-input=sys.stdin.readline
-array=[]
+arr=[]
 
 while(True):
     try:
-        array.append(int(input()))
+        arr.append(int(input()))
     except:
         break
 
-def post(start,end):
+def binary(start,end):
+    #print(start,end)
+
     if(start>=end):
         return
-    
-    root=array[start]
+
+    root=arr[start]
     idx=start+1
-    while(idx<end and array[idx]<root):
+
+    while(idx<end and arr[idx]<root):
         idx+=1
 
-    post(start+1,idx)
-    post(idx,end)
+    binary(start+1,idx) #왼쪽
+    binary(idx,end) #오른쪽
     print(root)
 
-post(0,len(array))
+binary(0,len(arr))
