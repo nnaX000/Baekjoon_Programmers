@@ -1,30 +1,28 @@
 import sys
-from collections import defaultdict,deque
+from collections import deque,defaultdict
 
-tree=defaultdict(list)
-N=int(sys.stdin.readline().rstrip())
-answer=[0 for i in range(N+1)]
-tree[1]=[]
+input=sys.stdin.readline
 
-candi=defaultdict(list)
-dequee=deque()
-dequee.append(1)
+N=int(input())
+
+dq=deque()
+dq.append(1)
+
+answer=[0 for _ in range(N+1)]
+link=defaultdict(list)
 
 for i in range(N-1):
-    a,b=(map(int,sys.stdin.readline().rstrip().split(' ')))
-    candi[a].append(b)
-    candi[b].append(a)
+    a,b=map(int,input().split())
+    link[a].append(b)
+    link[b].append(a)
 
-visited=set()
+while(dq):
+    tmp=dq.popleft()
 
-while(dequee):
-    tmp=dequee.popleft()
+    for value in link[tmp]:
+        if(answer[value]==0):
+            dq.append(value)
+            answer[value]=tmp
 
-    for i in candi[tmp]:
-        if(i not in visited):
-            answer[i]=tmp
-            visited.add(i)
-            dequee.append(i)
-
-for i in range(2,len(answer)):
+for i in range(2,N+1):
     print(answer[i])
