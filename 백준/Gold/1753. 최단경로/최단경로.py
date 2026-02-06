@@ -6,18 +6,16 @@ input=sys.stdin.readline
 V,E=map(int,input().split())
 K=int(input())
 
-graph=[[] for _ in range(V+1)]
-
-for i in range(E):
-    a,b,cost=map(int,input().split())
-    graph[a].append([b,cost])
-
 heap=[]
 heapq.heapify(heap)
-heapq.heappush(heap,(0,K)) #COST,K
-
+heapq.heappush(heap,(0,K))
 result=[float('inf') for _ in range(V+1)]
-result[K]=0
+
+node=[[] for _ in range(V+1)]
+
+for i in range(E):
+    a,b,c=map(int,input().split())
+    node[a].append([b,c])
 
 while(heap):
     cost,current=heapq.heappop(heap)
@@ -25,10 +23,13 @@ while(heap):
     if(result[current]<cost):
         continue
 
-    for i in range(len(graph[current])):
-        if(result[current]+graph[current][i][1]<result[graph[current][i][0]]):
-            result[graph[current][i][0]]=result[current]+graph[current][i][1]
-            heapq.heappush(heap,(result[current]+graph[current][i][1],graph[current][i][0]))
+    if(cost==0 and current==K):
+        result[current]=0
+
+    for i in range(len(node[current])):
+        if(result[node[current][i][0]]>cost+node[current][i][1]):
+            heapq.heappush(heap,(cost+node[current][i][1],node[current][i][0]))
+            result[node[current][i][0]]=cost+node[current][i][1]
 
 for i in range(1,V+1):
     if(result[i]==float('inf')):
