@@ -3,45 +3,52 @@ import heapq
 
 input=sys.stdin.readline
 
-n=int(input())
-m=int(input())
+n=int(input()) #도시 개수
+m=int(input()) #버스 개수
 
-prev=[0 for i in range(n+1)]
-answer=[float('inf') for i in range(n+1)]
-bus=[[] for i in range(n+1)]
 heap=[]
 heapq.heapify(heap)
 
+bus=[[] for _ in range(n+1)]
+
 for i in range(m):
-    start,end,cost=map(int,input().split())
+    a,b,c=map(int,input().split())
+    bus[a].append([b,c])
 
-    bus[start].append([end,cost])
+start,end=map(int,input().split())
 
-depart,des=map(int,input().split())
-heapq.heappush(heap,(0,depart))
-answer[depart]=0
+answer=[float('inf') for _ in range(n+1)]
+record=[-1 for _ in range(n+1)]
+heapq.heappush(heap,(0,start))
 
 while(heap):
-    cost,current=heapq.heappop(heap)
+    cost,n=heapq.heappop(heap)
 
-    if(answer[current]<cost):
+    if(answer[n]<cost):
         continue
 
-    for i in range(len(bus[current])):
-        if(answer[bus[current][i][0]]>answer[current]+bus[current][i][1]):
-            answer[bus[current][i][0]]=answer[current]+bus[current][i][1]
-            prev[bus[current][i][0]]=current
-            heapq.heappush(heap, (answer[current]+bus[current][i][1],bus[current][i][0]))
+    if(cost==0 and n==start):
+        answer[n]=0
 
-tmp=des
-route=[]
-route.append(tmp)
-while(tmp!=0):
-    route.append(prev[tmp])
-    tmp=prev[tmp]
+    for i in range(len(bus[n])):
+        if(cost+bus[n][i][1]<answer[bus[n][i][0]]):
+            answer[bus[n][i][0]]=cost+bus[n][i][1]
+            heapq.heappush(heap,(cost+bus[n][i][1],bus[n][i][0]))
+            record[bus[n][i][0]]=n
 
-route=list(reversed(route[:len(route)-1]))
+print(answer[end])
+path=[]
+path.append(end)
+des=end
 
-print(answer[des])
-print(len(route))
-print(*route)
+while(True):
+    n=record[des]
+    if(n==-1):
+        break
+    else:
+        path.append(n)
+        des=n
+
+path.reverse()
+print(len(path))
+print(*path)
