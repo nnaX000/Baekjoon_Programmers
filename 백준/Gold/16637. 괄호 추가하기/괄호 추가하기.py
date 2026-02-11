@@ -16,12 +16,13 @@ def dfs(start,array):
         arr.append(array[:])
         return
     
-    dfs(start+2,array)
+    #현재 후보 미선택
+    dfs(start+1,array)
 
-    for i in range(start,len(candi)):
-        array.append(candi[i])
-        dfs(i+2,array)
-        array.pop()
+    #현재 후보 선택
+    array.append(candi[start])
+    dfs(start+2,array)
+    array.pop()
 
 N=int(input())
 S=input()
@@ -34,12 +35,8 @@ for i in range(0,N-2,2):
 
 dfs(0,[])
 
-s_arr=set(tuple(i) for i in arr)
-s_arr=list(list(i) for i in s_arr)
-s_arr.append([])
-
-for i in range(len(s_arr)):
-    sett=s_arr[i]
+for i in range(len(arr)):
+    sett=arr[i]
     S_t=list(S[:])
 
     #괄호로 먼저 계산해야되는거 먼저 일괄 치환
@@ -83,4 +80,4 @@ for i in range(len(s_arr)):
     
     answer=max(answer,sv)
 
-print(answer) 
+print(answer)   
