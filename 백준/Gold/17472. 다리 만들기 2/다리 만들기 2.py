@@ -72,7 +72,7 @@ def path(x,y,di,stand):
 
         if(not(0<=nx<N and 0<=ny<M)):
             break
-
+            
         if(maps[nx][ny]==0):
             cost+=1
         
@@ -82,11 +82,6 @@ def path(x,y,di,stand):
                     roads[stand][maps[nx][ny]]=min(cost,roads[stand][maps[nx][ny]])
                 else:
                     roads[stand][maps[nx][ny]]=cost
-
-                if(stand in roads[maps[nx][ny]]):
-                    roads[maps[nx][ny]][stand]=min(cost,roads[maps[nx][ny]][stand])
-                else:
-                    roads[maps[nx][ny]][stand]=cost
 
                 break
             else:
