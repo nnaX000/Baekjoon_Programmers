@@ -1,28 +1,31 @@
 import sys
 from collections import deque
 
-dequee=deque()
 input=sys.stdin.readline
 
 N,K=map(int,input().split())
-dequee.append((N,0)) # 현재위치, cost
-visited=[False for i in range(100001)]
 
-while(dequee):
-    current,cost=dequee.popleft()
+dq=deque()
+dq.append((N,0)) #현재위치, cost
 
-    if(current==K):
+visited=[False for _ in range(100001)]
+visited[N]=True
+
+while(dq):
+    position,cost=dq.popleft()
+
+    if(position==K):
         print(cost)
         sys.exit(0)
 
-    if(current-1>=0 and not visited[current-1]):
-        visited[current-1]=True
-        dequee.append((current-1,cost+1))
-    
-    if(current+1<100001 and not visited[current+1]):
-        visited[current+1]=True
-        dequee.append((current+1,cost+1))
+    if(0<=position*2<=100000 and not visited[position*2]):
+        dq.append((position*2,cost+1))
+        visited[position*2]=True
 
-    if(current*2<100001 and not visited[current*2]):
-        visited[current*2]=True
-        dequee.append((current*2,cost+1))
+    if(0<=position+1<=100000 and not visited[position+1]):
+        dq.append((position+1,cost+1))
+        visited[position+1]=True
+
+    if(0<=position-1<=100000 and not visited[position-1]):
+        dq.append((position-1,cost+1))
+        visited[position-1]=True
