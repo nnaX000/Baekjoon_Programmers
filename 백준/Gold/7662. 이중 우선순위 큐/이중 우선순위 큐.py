@@ -1,67 +1,69 @@
 import sys
-import heapq
 from collections import defaultdict
+import heapq
 
 input=sys.stdin.readline
 
 T=int(input())
 
 for i in range(T):
-    n=int(input())
+    k=int(input())
 
-    max_heap=[]
-    min_heap=[]
+    #‘I n’은 정수 n을 Q에 삽입하는 연산을 의미한다. 
+    # 동일한 정수가 삽입될 수 있음을 참고하기 바란다. 
+    # ‘D 1’는 Q에서 최댓값을 삭제하는 연산을 의미하며, ‘D -1’는 Q 에서 최솟값을 삭제하는 연산을 의미
 
-    heapq.heapify(max_heap)
-    heapq.heapify(min_heap)
+    max_q=[] #-로 넣어야 함.
+    min_q=[] #그대로 넣어야 함.
 
-    nums=defaultdict(int)
+    heapq.heapify(max_q)
+    heapq.heapify(min_q)
 
-    for j in range(n):
-        order,value=input().split()
-        value=int(value)
+    nums=defaultdict(int) # 상태관리
 
-        if(order=="I"):
-            heapq.heappush(max_heap,-value)
-            heapq.heappush(min_heap,value)
-            nums[value]+=1
+    for i in range(k):
+        inst,n=input().split()
+        n=int(n)
+
+        if(inst=="I"):
+            nums[n]+=1
+            heapq.heappush(max_q,-n)
+            heapq.heappush(min_q,n)
         else:
-            if(value==1):
-                while(True and max_heap):
-                    result=-heapq.heappop(max_heap)
-                    if(nums[result]>0):
-                        nums[result]-=1
-                        break
-            elif(value==-1):
-                while(True and min_heap):
-                    result=heapq.heappop(min_heap)
-                    if(nums[result]>0):
-                        nums[result]-=1
-                        break
+            if(n==1 and max_q):
+                tmp=-heapq.heappop(max_q)
 
-    
+                while(tmp not in nums and max_q):
+                    tmp=-heapq.heappop(max_q)
 
-    if(not max_heap or not min_heap):
+                if(tmp in nums):
+                    nums[tmp]-=1
+                    if(nums[tmp]==0):
+                        del nums[tmp]
+
+            elif(n==-1 and min_q):
+                tmp=heapq.heappop(min_q)
+
+                while(tmp not in nums and min_q):
+                    tmp=heapq.heappop(min_q)
+
+                if(tmp in nums):
+                    nums[tmp]-=1
+                    if(nums[tmp]==0):
+                        del nums[tmp]
+
+        # print("max_q",max_q)
+        # print("min_q",min_q)
+        # print("nums",nums)
+
+    if(len(nums)==0):
         print("EMPTY")
     else:
         max_value=float('-inf')
         min_value=float('inf')
 
-        while(True and max_heap):
-            result=-heapq.heappop(max_heap)
-            if(nums[result]>0):
-                max_value=result
-                break
-        
-        while(True and min_heap):
-            result=heapq.heappop(min_heap)
-            if(nums[result]>0):
-                min_value=result
-                break
+        for key,value in nums.items():
+            max_value=max(max_value,key)
+            min_value=min(min_value,key)
 
-        if(max_value==float('-inf')):
-            print("EMPTY")
-        elif(min_value==float('inf')):
-            print("EMPTY")
-        else:
-            print(max_value,min_value)
+        print(max_value,min_value)
