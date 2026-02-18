@@ -7,17 +7,14 @@ T=int(input())
 
 for i in range(T):
     n=int(input())
-    answer=1
     closet=defaultdict(int)
 
-    kinds=set()
-
     for j in range(n):
-        cloth,kind=input().split()
-        kinds.add(kind)
+        tmp,kind=input().split()
         closet[kind]+=1
 
-    for key,values in closet.items():
-        answer*=(values+1)
+    result=1
+    for key,value in closet.items():
+        result*=(value+1)
 
-    print(answer-1)
+    print(result-1)
