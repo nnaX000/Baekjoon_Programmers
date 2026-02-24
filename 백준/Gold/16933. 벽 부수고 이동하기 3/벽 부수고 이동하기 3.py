@@ -40,7 +40,7 @@ def bfs(x,y):
                                 #print(cx,cy,cost,count,day,"일때,",nx,ny,cost+1,count+1,1)
                                 dq.append((nx,ny,cost+1,count+1,1))
                             else:
-                                dq.append((cx,cy,cost+1,count,day^1))
+                                dq.append((cx,cy,cost+1,count,0))
                 else:
                     if(not visited[nx][ny][count]):
                         visited[nx][ny][count]=True
