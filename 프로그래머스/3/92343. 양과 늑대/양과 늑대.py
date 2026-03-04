@@ -1,48 +1,39 @@
+import sys
+
 def solution(info, edges):
-    graph = [[] for i in range(len(info))]
-    max_value = float('-inf')
-    sheep = 0
-    wolf = 0
+    # 당신이 모은 양의 수보다 늑대의 수가 같거나 더 많아지면 바로 모든 양을 잡아먹어 버립니다. 
+    # 0이 양, 1이 늑대
+    
+    answer=float('-inf')
+    
+    sys.setrecursionlimit(10**6)
+    
+    ways=[[] for _ in range(len(info)+1)]
+    parents=[0 for _ in range(len(info)+1)]
+    visited=[0 for _ in range(len(info)+1)]
     
     for a,b in edges:
-        graph[a].append(b)
+        ways[a].append(b)
+        parents[b]=a
         
-    visited=set()
-    visited.add(0)
-    
-    if(info[0]==0):
-        sheep+=1
-    else:
-        wolf+=1
-    
-    def dfs(visited,sheep,wolf):
-        nonlocal max_value
+    parents[0]=-1
         
-        if(sheep<=wolf):
+    def dfs(avail,s_n,w_n):
+        nonlocal answer
+        
+        if(s_n<=w_n):
             return
-        else:
-            max_value = max(max_value,sheep)
         
-        for i in range(len(graph)):
-            if(i in visited):
-                for j in range(len(graph[i])):
-                    if(graph[i][j] not in visited):
-                        visited.add(graph[i][j])
-                        
-                        if(info[graph[i][j]]==0):
-                            sheep+=1
-                        else:
-                            wolf+=1
-
-                        dfs(visited,sheep,wolf)
-
-                        if(info[graph[i][j]]==0):
-                            sheep-=1
-                        else:
-                            wolf-=1
-                            
-                        visited.remove(graph[i][j])
+        answer=max(answer,s_n)
+            
+        for idx,i in enumerate(avail):
+            tmp=avail[:idx]+avail[idx+1:]+ways[i]
+            
+            if(info[i]==1):
+                dfs(tmp,s_n,w_n+1)
+            else:
+                dfs(tmp,s_n+1,w_n)
     
-    dfs(visited,sheep,wolf)
-    
-    return max_value
+    dfs(ways[0],1,0)
+        
+    return answer
