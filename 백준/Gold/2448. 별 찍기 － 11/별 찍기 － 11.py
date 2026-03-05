@@ -14,13 +14,12 @@ def dfs(height,x,y):
             star[x+2][y+i]="*"
         return
 
-    dfs(height//2,x,y)
-    dfs(height//2,x+height//2,y-height//2)
-    dfs(height//2,x+height//2,y+height//2)
+    nh=height//2
+    dfs(nh,x,y)
+    dfs(nh,x+nh,y-nh)
+    dfs(nh,x+nh,y+nh)
 
 dfs(N,0,N-1)
 
 for i in star:
-    for j in i:
-        print(j,end="")
-    print()
+    print("".join(i))
