@@ -5,10 +5,9 @@ input=sys.stdin.readline
 answer=0
 
 def find(x):
-    if(parent[x]!=x):
-        return find(parent[x])
-    
-    return parent[x]
+    if(parent[x]==x):
+        return x
+    return find(parent[x])
 
 def union(x,y):
     px,py=find(x),find(y)
