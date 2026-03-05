@@ -3,23 +3,24 @@ import sys
 input=sys.stdin.readline
 
 N=int(input())
+star=[[" " for _ in range(N*2)] for _ in range(N)]
 
-arr=[[' ' for _ in range((N//3)*5+((N//3)-1))] for _ in range(N)]
+def dfs(height,x,y):
+    if(height==3):
+        star[x][y]="*"
+        star[x+1][y-1]="*"
+        star[x+1][y+1]="*"
+        for i in range(-2,3,1):
+            star[x+2][y+i]="*"
+        return
 
-def draw(x, y, size): #size=높이
-    if size == 3:
-        arr[x][y] = '*'
-        arr[x+1][y-1] = '*'
-        arr[x+1][y+1] = '*'
-        for i in range(-2, 3): # 맨 아래 점 다섯개
-            arr[x+2][y+i] = '*'
-    else:
-        half = size // 2
-        draw(x, y, half)
-        draw(x + half, y - half, half) # 왼쪽
-        draw(x + half, y + half, half) # 오른쪽
+    dfs(height//2,x,y)
+    dfs(height//2,x+height//2,y-height//2)
+    dfs(height//2,x+height//2,y+height//2)
 
-draw(0, N-1, N)
+dfs(N,0,N-1)
 
-for i in arr:
-    print("".join(i))
+for i in star:
+    for j in i:
+        print(j,end="")
+    print()
