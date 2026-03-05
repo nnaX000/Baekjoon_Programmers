@@ -5,9 +5,10 @@ input=sys.stdin.readline
 answer=0
 
 def find(x):
-    if(parent[x]==x):
-        return x
-    return find(parent[x])
+    if(parent[x]!=x):
+        return find(parent[x])
+    
+    return parent[x]
 
 def union(x,y):
     px,py=find(x),find(y)
@@ -42,12 +43,19 @@ for i in range(N-1):
 
 distance.sort(key=lambda x:x[0])
 
+pick=0
+
 for i in range(M):
     x,y=map(int,input().split())
-    union(x,y)
+    if union(x,y):  
+        pick+=1
 
 for cost,start,end in distance:
     if (union(start,end)):
         answer+=cost
+        pick+=1
+
+        if(pick==N-1):
+            break
 
 print(f"{answer:.2f}")
