@@ -1,38 +1,38 @@
 import sys
 
-sys.setrecursionlimit(10**6)
-
 input=sys.stdin.readline
 
 N,B=map(int,input().split())
-A=[list(map(int,input().split())) for _ in range(N)]
 
-def calcul(a,b):
-    result=[[0 for _ in range(N)] for _ in range(N)]
+arr=[list(map(int,input().split())) for _ in range(N)]
+
+def calcul(array,array_1):
+    tmp=[[0 for _ in range(N)] for _ in range(N)]
 
     for i in range(N):
-        for j in range(N): #좌표
+        for j in range(N):
+            sv=0
             for k in range(N):
-                result[i][j]+=(a[i][k]*b[k][j])%1000
+                sv+=(array_1[i][k]*array[k][j])
+            tmp[i][j]=sv%1000
+    
+    return tmp
 
-    return result
-
-twice=calcul(A,A)
-
-def answer(n):
+def dfs(n):
     if(n==1):
-        return A
-    elif(n==2):
-        return twice
+        return arr
     
     if(n%2==1):
-        half=answer((n-1)//2)
-        return calcul(calcul(A,half),half)
+        return calcul(dfs(1),dfs(n-1))
     else:
-        half=answer(n//2)
-        return calcul(half,half)
+        a=dfs(n//2)
+        return calcul(a,a)
     
-for i in answer(B):
-    for j in i:
-        print(j%1000,end=" ")
-    print()
+answer=dfs(B)
+
+for i in range(N):
+    for j in range(N):
+        answer[i][j]%=1000
+
+for i in answer:
+    print(*i)
