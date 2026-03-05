@@ -4,28 +4,37 @@ input=sys.stdin.readline
 
 sys.setrecursionlimit(10**6)
 
-arr=[]
+answer=[]
+tree=[]
 
 while(True):
     try:
-        arr.append(int(input()))
+        tmp=int(input())
+        tree.append(tmp)
     except:
         break
 
-def binary(start,end):
-    #print(start,end)
+def dfs(arr):
 
-    if(start>=end):
+    if(len(arr)==0):
         return
+    
+    root=arr[0]
+    cut=-1
 
-    root=arr[start]
-    idx=start+1
+    for i in range(1,len(arr)):
+        if(arr[i]>root):
+            cut=i
+            break
 
-    while(idx<end and arr[idx]<root):
-        idx+=1
+    if(cut==-1):    
+        cut=len(arr)
+    
+    dfs(arr[1:cut])
+    dfs(arr[cut:len(arr)])
+    answer.append(root)
 
-    binary(start+1,idx) #왼쪽
-    binary(idx,end) #오른쪽
-    print(root)
+dfs(tree)
 
-binary(0,len(arr))
+for i in answer:
+    print(i)
