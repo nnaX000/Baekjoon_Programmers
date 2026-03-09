@@ -4,55 +4,42 @@ from collections import deque
 input=sys.stdin.readline
 
 V=int(input())
-
-tree=[[] for _ in range(V+1)]
+edges=[[] for _ in range(V+1)]
 
 for i in range(V):
     tmp=list(map(int,input().split()))
-    key=tmp[0]
 
     for j in range(1,len(tmp)-1,2):
-        tree[key].append([tmp[j],tmp[j+1]])
+        edges[tmp[0]].append([tmp[j],tmp[j+1]])
+        edges[tmp[j]].append([tmp[0],tmp[j+1]])
 
-def bfs():
-    global result
-    global dequee
+def bfs(x):
+    global visited
 
-    while(dequee):
-        n,cost=dequee.popleft()
+    dq=deque()
+    dq.append((x,0))
 
-        for i in range(len(tree[n])):
-            if(not visited[tree[n][i][0]]):
-                visited[tree[n][i][0]]=True
-                result[tree[n][i][0]]=cost+tree[n][i][1]
-                dequee.append((tree[n][i][0],cost+tree[n][i][1]))
+    while(dq):
+        a,cost=dq.popleft()
 
+        for i in range(len(edges[a])):
+            if(visited[edges[a][i][0]]==float('-inf')):
+                visited[edges[a][i][0]]=cost+edges[a][i][1]
+                dq.append((edges[a][i][0],cost+edges[a][i][1]))
 
-result=[0 for _ in range(V+1)]
-result[1]=0
-visited=[False for _ in range(V+1)]
-visited[1]=True
-dequee=deque()
-dequee.append((1,0))
+visited=[float('-inf') for _ in range(V+1)]
+visited[1]=0
+bfs(1)
+mv=max(visited)
+d1=0
 
-bfs()
-max_value=max(result)
-
-op=0
-for i in range(len(result)):
-    if(result[i]==max_value):
-        op=i
+for i in range(len(visited)):
+    if(visited[i]==mv):
+        d1=i
         break
 
+visited=[float('-inf') for _ in range(V+1)]
+visited[d1]=0
+bfs(d1)
 
-result=[0 for _ in range(V+1)]
-result[op]=0
-visited=[False for _ in range(V+1)]
-visited[op]=True
-dequee=deque()
-dequee.append((op,0))
-
-bfs()
-max_value=max(result)
-
-print(max_value)
+print(max(visited))
