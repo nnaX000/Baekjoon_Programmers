@@ -1,73 +1,87 @@
-from collections import deque
 import sys
+import heapq
+from collections import deque
 
-input = sys.stdin.readline
+input=sys.stdin.readline
 
-s_x = 0
-s_y = 0
-s_size = 2  # 초기2
-time = 0
-dx = [-1, 0, 1, 0]
-dy = [0, -1, 0, 1]
-equal_size_cnt = 0
+N=int(input())
 
-n = int(input())
-arr = [list(map(int, input().split())) for _ in range(n)]
+space=[list(map(int,input().split())) for _ in range(N)]
 
-# 아기상어 위치 구하기
-for i in range(n):
-    for j in range(n):
-        if arr[i][j] == 9:
-            s_x = i # 시작 x
-            s_y = j # 시작 y
+#0 빈칸
+#1 2 3 4 5 6 물고기
+# 9 아기상어
 
-#추가
-arr[s_x][s_y]=0
+# 처음 아기상어 크기2
+# 크기가 같은 물고기는 지나갈수밖에 없고 크기가 작은 물고기는 잡아먹을 수 있음
+# 거리가 가까운 물고기가 많으면 가장 위에 있는, 가장 왼쪽에 있는 물고기
 
-# 이동하는 함수
-def bfs():
-    q = deque()
-    q.append((0, s_x, s_y))
-    visited = [[False] * n for _ in range(n)]
-    visited[s_x][s_y]=True
-    candidate = []
+baby_x=0
+baby_y=0
 
-    while q:  # 들어올 수 있는애 계산
-        t,x,y = q.popleft()
+baby_s=2
+count=2
+
+time=0
+
+dx=[-1,1,0,0]
+dy=[0,0,-1,1]
+
+for i in range(N):
+    for j in range(N):
+        if(space[i][j]==9):
+            baby_x,baby_y=i,j
+            space[i][j]=0
+
+def calcul():
+    global space
+    global hq
+
+    dq=deque()
+    dq.append((baby_x,baby_y,0))
+
+    visited=[[False for _ in range(N)] for _ in range(N)]
+    visited[baby_x][baby_y]=True
+
+    while(dq):
+        x,y,cost=dq.popleft()
 
         for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
-            if 0 <= nx < n and 0 <= ny < n and s_size >= arr[nx][ny] and not visited[nx][ny]:
-                # 1초에 상하좌우 한칸씩 이동
-                visited[nx][ny] = True
-                if 0 < arr[nx][ny] < s_size:
-                    candidate.append((t+1,nx,ny))
-                q.append((t+1,nx,ny))
+            nx=x+dx[i]
+            ny=y+dy[i]
 
-    candidate.sort()
+            if(0<=nx<N and 0<=ny<N and space[nx][ny]<=baby_s and not visited[nx][ny]):
+                visited[nx][ny]=True
+                dq.append((nx,ny,cost+1))
+                if(space[nx][ny]!=0):
+                    heapq.heappush(hq,(cost+1,nx,ny,space[nx][ny]))
 
-    return candidate
+while(True):
+    hq=[]
+    heapq.heapify(hq)
 
+    calcul()
 
-while True:    
-    result=bfs()
+    check=False
 
-    if(len(result)==0):
+    while(hq):
+        t_d,target_x,target_y,t_s=heapq.heappop(hq)
+
+        if(t_s<baby_s):
+            check=True
+            break
+
+    if(not check):
+        print(time)
         break
     else:
-        t, x, y = result[0]
+        time+=t_d
+        space[target_x][target_y]=0
 
-        time += t
-        s_x = x
-        s_y = y
+        baby_x=target_x
+        baby_y=target_y
 
-        arr[x][y] = 0
-
-        equal_size_cnt += 1
-        # 상어 넓이 증가
-        if equal_size_cnt == s_size:
-            equal_size_cnt = 0
-            s_size += 1
-
-print(time)
+        count-=1
+        if(count==0):
+            baby_s+=1
+            count=baby_s
